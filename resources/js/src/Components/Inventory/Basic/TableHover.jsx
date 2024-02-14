@@ -147,6 +147,7 @@ export default class TableHover extends React.Component {
 
   componentDidMount() {
     this.products();
+    console.log('hehehehehe')
   }
 
   // componentDidUpdate(pP, pS, sS) {
