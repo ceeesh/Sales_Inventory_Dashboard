@@ -83,7 +83,7 @@ export default class TableHover extends React.Component {
     const postData = {
       product_name: this.state.product_name,
       product_quantity: this.state.product_quantity,
-      product_id: this.state.product_name === "White Polo Shirt" ? 1 : this.state.product_name === "Straight Cut Slacks" ? 2 : 3,
+      product_id: 1,
       price: this.state.price
     }
 
@@ -104,7 +104,7 @@ export default class TableHover extends React.Component {
     this.sales()
   }
 
-  handleSubmitEdit(e) {
+  handleSubmitEdit(e, product_id) {
     e.preventDefault();
 
     const postData = {

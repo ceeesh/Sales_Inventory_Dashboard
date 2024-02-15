@@ -9,11 +9,14 @@ import successHandler from '../../../../utils/successHandler';
 
 import Swal from 'sweetalert2';
 
+import avatar1 from '../../../assets/utils/images/avatars/1.jpg';
+import avatar2 from '../../../assets/utils/images/avatars/2.jpg';
+import avatar3 from '../../../assets/utils/images/avatars/3.jpg';
+import avatar4 from '../../../assets/utils/images/avatars/4.jpg';
+
 export default class TableHover extends React.Component {
   constructor() {
     super();
-
-
 
     this.state = {
       allProducts: [],
@@ -29,6 +32,7 @@ export default class TableHover extends React.Component {
       price_edit: '',
       product_id: '',
       currentIndex: 1,
+      product_image: '',
     };
 
     this.records = [];
@@ -41,6 +45,7 @@ export default class TableHover extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleImage = this.handleImage.bind(this);
     this.goToPage = this.goToPage.bind(this);
     this.prevPage = this.prevPage.bind(this);
     this.nextPage = this.nextPage.bind(this);
@@ -101,7 +106,7 @@ export default class TableHover extends React.Component {
     }))
   }
 
-  toggleSomething(e){
+  toggleSomething(e) {
     console.log('hey', e.target)
   }
 
@@ -115,11 +120,11 @@ export default class TableHover extends React.Component {
         this.setState(prevState => ({
           activeButton: !prevState.activeButton,
         }))
-        
+
       }).catch((err) => {
         console.log(err)
       })
-    
+
   }
 
   handleChange(e) {
@@ -151,7 +156,7 @@ export default class TableHover extends React.Component {
         errorHandler(err.response.data.errors.product_name)
         errorHandler(err.response.data.errors.price)
       })
-    
+
   }
 
   handleSubmitEdit(e) {
@@ -173,23 +178,43 @@ export default class TableHover extends React.Component {
         errorHandler(err.response.data.errors.stock)
         errorHandler(err.response.data.errors.price)
       })
-    
+
   }
+
+  handleImage(e, prod_id) {
+    e.preventDefault()
+    console.log(e.target.files[0])
+    this.setState({
+      product_image: e.target.files[0]
+    })
+
+      const formData = new FormData();
+      formData.append('product_image', this.state.product_image)
+
+      AuthApi.imageUpload(formData, prod_id)
+        .then((res) => {
+          console.log(res)
+        }).catch((err) => {
+          console.log(err)
+        })
+  }
+
 
   componentDidMount() {
     this.products();
 
   }
 
-  // componentDidUpdate(pP, pS, sS) {
-  //   // console.log(this.hello = 2, 'DIDUPDATE')
-  //   // console.log(this.state.activeButton)
-  //   // if (pS.allProducts.length !== this.state.allProducts.length) {
-  //   //   this.products()
-  //   //   console.log('hey') 
-  //   // }
+  componentDidUpdate(pP, pS, sS) {
+    // console.log(this.state.product_image)
+    // console.log(this.hello = 2, 'DIDUPDATE')
+    // console.log(this.state.activeButton)
+    // if (pS.allProducts.length !== this.state.allProducts.length) {
+    //   this.products()
+    //   console.log('hey') 
+    // }
 
-  // }
+  }
 
 
   render() {
@@ -223,19 +248,39 @@ export default class TableHover extends React.Component {
 
                   <tr key={indx}>
                     <td className="">
-                      <div className="p-0">
+
+                      <div className="widget-content p-0">
                         <div className="widget-content-wrapper">
                           <div className="widget-content-left me-3">
-                            {/* <div className="widget-content-left">
-                                <img width={40} className="rounded-circle" src={avatar3} alt="Avatar" />
-                              </div> */}
+                            <div className="widget-content-left">
+                              <form onSubmit={(e) => this.handleImage(e, prod.id)} encType='multipart/form-data'>
+                                <input type='file' onChange={this.handleImage}  name='product_image' accept=".png, .jpg, .jpeg, .gif"/>
+                                
+                                {/* <button type='submit'>Upload</button> */}
+                              </form>
+                              <img width={40} className="rounded" src={avatar3} alt="Avatar" />
+                            </div>
                           </div>
                           <div className="widget-content-left flex2">
                             <div className="widget-heading">{prod.product_name}</div>
-                            {/* <div className="widget-subheading opacity-7">{}</div> */}
+                            {/* <div className="widget-subheading opacity-7">smb</div> */}
                           </div>
                         </div>
                       </div>
+
+                      {/* <div className="p-0">
+                        <div className="widget-content-wrapper">
+                          <div className="widget-content-left me-3">
+                            <div className="widget-content-left">
+                                <img width={40} className="rounded-circle" src={avatar3} alt="Avatar" />
+                              </div>
+                          </div>
+                          <div className="widget-content-left flex2">
+                            <div className="widget-heading">{prod.product_name}</div>
+                            <div className="widget-subheading opacity-7">{}</div>
+                          </div>
+                        </div>
+                      </div> */}
                     </td>
                     <td className="text-center">{this.PHPESO.format(prod.price)}</td>
                     <td className="text-center">{prod.stock}</td>
@@ -338,16 +383,12 @@ export default class TableHover extends React.Component {
                   name="stock"
                   type="number"
                   onChange={this.handleChange}
-                // value={this.state.product_quantity}
                 />
 
               </FormGroup>
 
             </ModalBody>
             <ModalFooter>
-              {/* <div className='mt-3'>
-                <p className='fs-5'>Total Amount: {`0.00`}</p>
-              </div> */}
               <Button color="primary" onClick={this.handleSubmit}>
                 Submit
               </Button>{' '}
