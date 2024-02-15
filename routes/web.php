@@ -8,6 +8,7 @@ use App\Http\Controllers\SaleController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Models\Inventory;
+use App\Models\Product;
 use App\Models\Project;
 
 /*
@@ -57,6 +58,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::put('/product/{product_id}', [ProductController::class, 'update']);
 
     Route::delete('/product/{product_id}', [ProductController::class, 'destroy']);
+
+    Route::put('product/activate/{product_id}', [ProductController::class, 'activate']);
 
     Route::post('/logout', [UserController::class, 'logout']);
 });

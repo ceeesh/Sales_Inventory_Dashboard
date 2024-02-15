@@ -81,6 +81,11 @@ class AuthApi {
     deleteProduct = async (product_id) => {
         return await axios.delete(`${BASED_URL}product/${product_id}`)
     }
+
+     // POST new product
+     activateButton = async (data, product_id) => {
+        return await axios.put(`${BASED_URL}product/activate/${product_id}`, data)
+    }
 }
 
 export default new AuthApi();

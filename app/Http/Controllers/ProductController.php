@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
@@ -77,5 +78,14 @@ class ProductController extends Controller
         $product = Product::where('id', '=', $product_id);
         $product->delete();
         return response()->json('Product Deleted');
+    }
+
+    public function activate(Request $request, $product_id)
+    {
+        // dd($request);
+        $product_active = Product::where('id', '=', $product_id)->first()->update(['active' => $request->active]);
+        
+        return response()->json($product_active);
+        // dd($request);
     }
 }

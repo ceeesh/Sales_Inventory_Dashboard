@@ -167,7 +167,7 @@ const AppMain = () => {
             </Suspense>
 
             <Route exact path="/" render={() => (
-                <Redirect to="/dashboards/basic"/>
+                <Redirect to="inventory"/>
             )}/>
             <ToastContainer/>
         </Fragment>
