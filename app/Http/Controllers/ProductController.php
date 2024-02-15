@@ -88,4 +88,17 @@ class ProductController extends Controller
         return response()->json($product_active);
         // dd($request);
     }
+
+    public function imageUpload(Request $request, $product_id)
+    {
+        dd($request);
+       $product = Product::where('id', '=', $product_id)->first();
+    //    ->update(['product_image' => $request->product_image]);
+        if($request->hasFile('product_image')) {
+            $product = $request->file('product_image')->store('logos', 'public');
+        }
+
+        
+        return response()->json("hey");
+    }
 }
