@@ -109,7 +109,6 @@ export default class TableHover extends React.Component {
     const postData = {
       active: this.state.activeButton === true ? 'true' : 'false'
     }
-    // console.log(this.state.activeButton)
     AuthApi.activateButton(postData, product_id)
       .then((res) => {
         this.products()
@@ -279,7 +278,6 @@ export default class TableHover extends React.Component {
                             });
                             AuthApi.deleteProduct(prod.id)
                               .then((res) => {
-                                // console.log(res)
                               })
                             this.products()
                           }
