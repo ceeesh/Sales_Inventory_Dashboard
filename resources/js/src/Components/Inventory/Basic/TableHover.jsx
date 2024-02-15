@@ -13,12 +13,14 @@ export default class TableHover extends React.Component {
   constructor() {
     super();
 
-    this.records = [];
+
 
     this.state = {
       allProducts: [],
       modal: false,
       modalEdit: false,
+      activeButton: false,
+      active: 'false',
       product_name: '',
       price: '',
       stock: '',
@@ -29,20 +31,26 @@ export default class TableHover extends React.Component {
       currentIndex: 1,
     };
 
+    this.records = [];
+
+    this.hello = this.state.currentIndex;
+
     this.toggle = this.toggle.bind(this);
     this.toggleEdit = this.toggleEdit.bind(this);
+    this.toggleActivateButton = this.toggleActivateButton.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.goToPage = this.goToPage.bind(this);
     this.prevPage = this.prevPage.bind(this);
     this.nextPage = this.nextPage.bind(this);
+    this.toggleSomething = this.toggleSomething.bind(this);
   }
 
   goToPage(e, indx) {
     e.preventDefault();
 
-    this.setState({ currentIndex: indx + 1})
+    this.setState({ currentIndex: indx + 1 })
     console.log('goto', indx + 1)
   }
 
@@ -59,7 +67,7 @@ export default class TableHover extends React.Component {
     e.preventDefault()
     const isLastPage = this.state.currentIndex === Math.ceil(this.records.length / 2)
     // this.state.allProducts.length - 1;
-    const newIndex = isLastPage ? this.state.currentIndex = Math.ceil((this.records.length / 2 )) : this.state.currentIndex + 1;
+    const newIndex = isLastPage ? this.state.currentIndex = Math.ceil((this.records.length / 2)) : this.state.currentIndex + 1;
     // 0
     this.setState({ currentIndex: newIndex })
     console.log('next', newIndex, Math.ceil(this.records.length / 2))
@@ -93,6 +101,28 @@ export default class TableHover extends React.Component {
     }))
   }
 
+  toggleSomething(e){
+    console.log('hey', e.target)
+  }
+
+  toggleActivateButton(product_id) {
+    const postData = {
+      active: this.state.activeButton === true ? 'true' : 'false'
+    }
+    // console.log(this.state.activeButton)
+    AuthApi.activateButton(postData, product_id)
+      .then((res) => {
+        this.products()
+        this.setState(prevState => ({
+          activeButton: !prevState.activeButton,
+        }))
+        
+      }).catch((err) => {
+        console.log(err)
+      })
+    
+  }
+
   handleChange(e) {
     this.setState({
       [e.target.name]: e.target.value
@@ -116,12 +146,13 @@ export default class TableHover extends React.Component {
           stock: ''
         })
         this.toggle()
+        this.products()
       }).catch((err) => {
         errorHandler(err.response.data.errors.stock)
         errorHandler(err.response.data.errors.product_name)
         errorHandler(err.response.data.errors.price)
       })
-    this.products()
+    
   }
 
   handleSubmitEdit(e) {
@@ -137,25 +168,27 @@ export default class TableHover extends React.Component {
       .then((res) => {
         successHandler(res.data)
         this.toggleEdit()
+        this.products()
       }).catch((err) => {
         errorHandler(err.response.data.errors.product_name)
         errorHandler(err.response.data.errors.stock)
         errorHandler(err.response.data.errors.price)
       })
-    this.products()
+    
   }
 
   componentDidMount() {
     this.products();
+
   }
 
   // componentDidUpdate(pP, pS, sS) {
-  //   console.log(this.records, 'DIDUPDATE')
-
-  //   if (pS.allProducts.length !== this.state.allProducts.length) {
-  //     this.products()
-  //     console.log('hey') 
-  //   }
+  //   // console.log(this.hello = 2, 'DIDUPDATE')
+  //   // console.log(this.state.activeButton)
+  //   // if (pS.allProducts.length !== this.state.allProducts.length) {
+  //   //   this.products()
+  //   //   console.log('hey') 
+  //   // }
 
   // }
 
@@ -182,7 +215,7 @@ export default class TableHover extends React.Component {
                   <th className="fw-bolder">Product Name</th>
                   <th className="text-center fw-bolder">Price</th>
                   <th className="text-center fw-bolder">Stock</th>
-                  {/* <th className="text-center fw-bolder">Total Amount</th> */}
+                  <th className="text-center fw-bolder">Active</th>
                   <th className="text-center fw-bolder">Actions</th>
                 </tr>
               </thead>
@@ -207,9 +240,17 @@ export default class TableHover extends React.Component {
                     </td>
                     <td className="text-center">{this.PHPESO.format(prod.price)}</td>
                     <td className="text-center">{prod.stock}</td>
-                    {/* <td className="text-center">
-                      <div className="">{this.PHPESO.format(prod.price)}</div>
-                    </td> */}
+                    <td className="text-center">
+                      <FormGroup switch className='text-center d-flex justify-content-center'>
+                        <Input
+                          type="switch"
+                          // defaultChecked={prod.active === 'true' ? true : false}
+                          checked={prod.active === 'true' ? true : false}
+                          // onChange={(e) => this.toggleSomething(e)}
+                          onClick={(e) => this.toggleActivateButton(prod.id)}
+                        />
+                      </FormGroup>
+                    </td>
                     <td className="text-center">
                       <button type="button" className="btn btn-primary btn-sm me-2" onClick={(e) => (
                         this.setState(prevState => ({
@@ -253,7 +294,7 @@ export default class TableHover extends React.Component {
           <div className="d-block text-center card-footer">
             {/* <button className="me-2 btn-icon btn-icon-only btn btn-outline-danger"><i className="pe-7s-trash btn-icon-wrapper"> </i></button>
             <button className="btn-wide btn btn-success">Save</button> */}
-            <TablePagination goToPage={this.goToPage} nextPage={this.nextPage} prevPage={this.prevPage} allProducts={this.state.allProducts} currentIndex={this.state.currentIndex} newRecords={this.records}/>
+            <TablePagination goToPage={this.goToPage} nextPage={this.nextPage} prevPage={this.prevPage} allProducts={this.state.allProducts} currentIndex={this.state.currentIndex} newRecords={this.records} />
           </div>
         </Card>
 
