@@ -6,6 +6,8 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -31,6 +33,7 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
+        // dd($request);
         Product::create([
             'product_name' => $request->product_name,
             'category_name' => 'first',
@@ -91,14 +94,22 @@ class ProductController extends Controller
 
     public function imageUpload(Request $request, $product_id)
     {
-        dd($request);
+
+        // dd($request->product_image);
+        $imageName = Str::random(32).".".$request->product_image->getClientOriginalExtension();
+        // dd($imageName);
+        // dd($request->hasFile('product_image'));
+        // dd($request->file('product_image')->guessExtension());
+        // dd($product_id);
        $product = Product::where('id', '=', $product_id)->first();
     //    ->update(['product_image' => $request->product_image]);
         if($request->hasFile('product_image')) {
-            $product = $request->file('product_image')->store('logos', 'public');
+            // $request->file('product_image')->store('logos', 'public');
+            Storage::disk('public')->put($imageName, file_get_contents($request->product_image));
         }
 
+       $updating_product_image = Product::where('id', '=', $product_id)->first()->update(['product_image' => $imageName]);
         
-        return response()->json("hey");
+        return response()->json('damn');
     }
 }
