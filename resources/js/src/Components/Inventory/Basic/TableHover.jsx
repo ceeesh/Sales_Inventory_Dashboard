@@ -222,16 +222,16 @@ export default class TableHover extends React.Component {
 
   }
 
-  componentDidUpdate(pP, pS, sS) {
-    console.log(this.state.product_name)
-    // console.log(this.hello = 2, 'DIDUPDATE')
-    // console.log(this.state.activeButton)
-    // if (pS.allProducts.length !== this.state.allProducts.length) {
-    //   this.products()
-    //   console.log('hey') 
-    // }
+  // componentDidUpdate(pP, pS, sS) {
+  //   console.log(this.state.product_name)
+  //   // console.log(this.hello = 2, 'DIDUPDATE')
+  //   // console.log(this.state.activeButton)
+  //   // if (pS.allProducts.length !== this.state.allProducts.length) {
+  //   //   this.products()
+  //   //   console.log('hey') 
+  //   // }
 
-  }
+  // }
 
 
   render() {

@@ -15,6 +15,12 @@ class AuthApi {
         // , { headers: token }
     }
 
+     // GET retrieving current user
+     getAllCurrentUser = async (token) => {
+        return await axios.get(`${BASED_URL}current_user`)
+        // , { headers: token }
+    }
+
     // GET retrieving all projects 
     getAllProjects = async (token) => {
         return await axios.get(`${BASED_URL}projects`)
