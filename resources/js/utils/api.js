@@ -89,7 +89,7 @@ class AuthApi {
 
     // PUT new product
     imageUpload = async (data, product_id) => {
-        return await axios.put(`${BASED_URL}product/image/${product_id}`, data)
+        return await axios.post(`${BASED_URL}product/image/${product_id}`, data)
     }
     // 'product/image/{product_id}'
 }

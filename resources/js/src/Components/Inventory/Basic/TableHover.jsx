@@ -13,6 +13,7 @@ import avatar1 from '../../../assets/utils/images/avatars/1.jpg';
 import avatar2 from '../../../assets/utils/images/avatars/2.jpg';
 import avatar3 from '../../../assets/utils/images/avatars/3.jpg';
 import avatar4 from '../../../assets/utils/images/avatars/4.jpg';
+import axios from 'axios';
 
 export default class TableHover extends React.Component {
   constructor() {
@@ -50,6 +51,7 @@ export default class TableHover extends React.Component {
     this.prevPage = this.prevPage.bind(this);
     this.nextPage = this.nextPage.bind(this);
     this.toggleSomething = this.toggleSomething.bind(this);
+    this.uploadProductImage = this.uploadProductImage.bind(this);
   }
 
   goToPage(e, indx) {
@@ -181,23 +183,25 @@ export default class TableHover extends React.Component {
 
   }
 
+  uploadProductImage(e, prod_id) {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('product_image', this.state.product_image)
+    AuthApi.imageUpload(formData, prod_id)
+      .then((res) => {
+        console.log(res)
+        this.products();
+      }).catch((err) => {
+        console.log(err)
+      })
+  }
+
   handleImage(e, prod_id) {
     e.preventDefault()
-    console.log(e.target.files[0])
-    this.setState({
-      product_image: e.target.files[0]
-    })
-
-      const formData = new FormData();
-      formData.append('product_image', this.state.product_image)
-
-      AuthApi.imageUpload(formData, prod_id)
-        .then((res) => {
-          console.log(res)
-        }).catch((err) => {
-          console.log(err)
-        })
+    this.uploadProductImage(e, prod_id)
   }
+
+
 
 
   componentDidMount() {
@@ -253,17 +257,21 @@ export default class TableHover extends React.Component {
                         <div className="widget-content-wrapper">
                           <div className="widget-content-left me-3">
                             <div className="widget-content-left">
-                              <form onSubmit={(e) => this.handleImage(e, prod.id)} encType='multipart/form-data'>
-                                <input type='file' onChange={this.handleImage}  name='product_image' accept=".png, .jpg, .jpeg, .gif"/>
+                              <form onSubmit={(e) => this.handleImage(e, prod.id)} >
+                                <input type='file' name='product_image' onChange={(e) => {
+                                  this.setState({
+                                    product_image: e.target.files[0]
+                                  })
+                                }} accept=".png, .jpg, .jpeg, .gif" />
                                 
-                                {/* <button type='submit'>Upload</button> */}
+                                <button type='submit'>Upload</button>
                               </form>
-                              <img width={40} className="rounded" src={avatar3} alt="Avatar" />
+                              <img width={40} className="rounded" src={`http://127.0.0.1:8000/storage/${prod.product_image}`} alt="Avatar" />
                             </div>
                           </div>
                           <div className="widget-content-left flex2">
                             <div className="widget-heading">{prod.product_name}</div>
-                            {/* <div className="widget-subheading opacity-7">smb</div> */}
+                            <div className="widget-subheading opacity-7">random data</div>
                           </div>
                         </div>
                       </div>
@@ -290,7 +298,7 @@ export default class TableHover extends React.Component {
                           type="switch"
                           // defaultChecked={prod.active === 'true' ? true : false}
                           checked={prod.active === 'true' ? true : false}
-                          // onChange={(e) => this.toggleSomething(e)}
+                          onChange={(e) => this.toggleSomething(e)}
                           onClick={(e) => this.toggleActivateButton(prod.id)}
                         />
                       </FormGroup>
@@ -386,6 +394,19 @@ export default class TableHover extends React.Component {
                 />
 
               </FormGroup>
+
+              {/* <FormGroup>
+                <Label for="image">
+                  Product Image
+                </Label>
+                <Input
+                  id="image"
+                  name="product_image"
+                  type="file"
+                  onChange={this.handleChange}
+                />
+
+              </FormGroup> */}
 
             </ModalBody>
             <ModalFooter>
