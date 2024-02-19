@@ -30,24 +30,24 @@
                             <img src={{asset('images/img1.jpg')}} class="d-block w-100 vh-100 object-fit-cover"
                                 alt="..." style="filter: opacity(60%);">
                             <div class="carousel-caption d-none d-md-block">
-                                <h5>First slide label</h5>
-                                <p>Some representative placeholder content for the first slide.</p>
+                                <h5>Inventory Dashboard</h5>
+                                <p>Products</p>
                             </div>
                         </div>
                         <div class="carousel-item bg-danger">
                             <img src={{asset('images/img2.jpg')}} class="d-block w-100 vh-100 object-fit-cover"
                                 alt="..." style="filter: opacity(70%);">
                             <div class="carousel-caption d-none d-md-block">
-                                <h5>First slide label</h5>
-                                <p>Some representative placeholder content for the first slide.</p>
+                                <h5>Inventory Dashboard</h5>
+                                <p>Sales</p>
                             </div>
                         </div>
                         <div class="carousel-item bg-dark">
                             <img src={{asset('images/img3.jpg')}} class="d-block w-100 vh-100 object-fit-cover"
                                 alt="..." style="filter: opacity(20%)">
                             <div class="carousel-caption d-none d-md-block">
-                                <h5>First slide label</h5>
-                                <p>Some representative placeholder content for the first slide.</p>
+                                <h5>Inventory Dashboard</h5>
+                                <p>Stocks</p>
                             </div>
                         </div>
                     </div>

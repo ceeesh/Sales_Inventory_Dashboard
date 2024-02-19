@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 
 import MetisMenu from 'react-metismenu';
 
-import { MainNav, ComponentsNav, FormsNav, WidgetsNav, ChartsNav, ProjectsNav, InvetoryNav, SalesNav } from './NavItems';
+import { MainNav, ComponentsNav, FormsNav, WidgetsNav, ChartsNav, ProjectsNav, ProductNav, SalesNav } from './NavItems';
 
 class Nav extends Component {
 
@@ -27,11 +27,12 @@ class Nav extends Component {
                 </div>
                 {/* <h5 className="app-sidebar__heading">Staff Management</h5>
                 <MetisMenu content={MainNav} activeLinkFromLocation className="vertical-nav-menu" iconNamePrefix="" classNameStateIcon="pe-7s-angle-down" /> */}
+                <div className='d-flex flex-column gap-2'>
                 <h5 className="app-sidebar__heading">Inventory</h5>
-                <MetisMenu content={InvetoryNav} activeLinkFromLocation className="vertical-nav-menu" iconNamePrefix="" classNameStateIcon="pe-7s-angle-down" />
-                <h5 className="app-sidebar__heading">Sales </h5>
+                <MetisMenu content={ProductNav} activeLinkFromLocation className="vertical-nav-menu" iconNamePrefix="" classNameStateIcon="pe-7s-angle-down" />
+                
                 <MetisMenu content={SalesNav} activeLinkFromLocation className="vertical-nav-menu" iconNamePrefix="" classNameStateIcon="pe-7s-angle-down" />
-
+                </div>
                 {/* <h5 className="app-sidebar__heading">UI Components</h5>
                 <MetisMenu content={ComponentsNav} activeLinkFromLocation className="vertical-nav-menu" iconNamePrefix="" classNameStateIcon="pe-7s-angle-down"/>
                 <h5 className="app-sidebar__heading">Widgets</h5>

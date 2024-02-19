@@ -14,10 +14,10 @@ export const ProjectsNav = [
     },
 ];
 
-export const InvetoryNav = [
+export const ProductNav = [
     {
         icon: 'pe-7s-rocket',
-        label: 'Dashboard',
+        label: 'Products',
         to: '#/inventory',
     },
 ];
@@ -25,7 +25,7 @@ export const InvetoryNav = [
 export const SalesNav = [
     {
         icon: 'pe-7s-rocket',
-        label: 'Dashboard',
+        label: 'Sales',
         to: '#/sales',
     },
 ];
