@@ -41,12 +41,12 @@ class UserBox extends React.Component {
     async getUser() {
         AuthApi.getAllCurrentUser()
         .then((res) => {
-            console.log(res)
+            // console.log(res)
             this.setState({
                 currentUser: res.data
             })
         }).catch((err) => {
-            console.log(err)
+            // console.log(err)
         })
     }
 
