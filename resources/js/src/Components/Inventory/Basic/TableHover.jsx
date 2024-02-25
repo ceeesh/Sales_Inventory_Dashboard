@@ -357,7 +357,7 @@ export default class TableHover extends React.Component {
           <div className="d-block text-center card-footer">
             {/* <button className="me-2 btn-icon btn-icon-only btn btn-outline-danger"><i className="pe-7s-trash btn-icon-wrapper"> </i></button>
             <button className="btn-wide btn btn-success">Save</button> */}
-            <TablePagination goToPage={this.goToPage} nextPage={this.nextPage} prevPage={this.prevPage} allProducts={this.state.allProducts} currentIndex={this.state.currentIndex} newRecords={this.records} />
+            {/* <TablePagination goToPage={this.goToPage} nextPage={this.nextPage} prevPage={this.prevPage} allProducts={this.state.allProducts} currentIndex={this.state.currentIndex} newRecords={this.records} /> */}
           </div>
         </Card>
 
