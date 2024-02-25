@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreSaleRequest;
 use App\Http\Requests\UpdateSaleRequest;
 use App\Models\Sale;
+use App\Models\Product;
 use DB;
 
 class SaleController extends Controller
@@ -31,11 +32,12 @@ class SaleController extends Controller
      */
     public function store(StoreSaleRequest $request)
     {
-        // dd($request);
+        $product = Product::where('product_name', '=', $request->product_name)->first();
+        $product_id = $product;
         Sale::create([
             'product_name' => $request->product_name,
             'product_quantity' => $request->product_quantity,
-            'product_id' => $request->product_id,
+            'product_id' => $product_id->id,
             'price' => $request->price,
         ]);
         return response()->json('New Sale Added');

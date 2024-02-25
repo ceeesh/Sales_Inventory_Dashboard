@@ -17,7 +17,7 @@ const Sales = ({ match }) => {
                         <Route component={BasicSales} />
                         {/* path={`${match.url}/basic`} */}
                     </div>
-                    <AppFooter />
+                    {/* <AppFooter /> */}
                 </div>
             </div>
         </Fragment>

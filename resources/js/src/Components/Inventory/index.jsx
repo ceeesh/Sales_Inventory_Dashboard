@@ -17,7 +17,7 @@ const Inventory = ({ match }) => {
                         <Route component={BasicInventory} />
                         {/* path={`${match.url}/basic`} */}
                     </div>
-                    <AppFooter />
+                    {/* <AppFooter /> */}
                 </div>
             </div>
         </Fragment>

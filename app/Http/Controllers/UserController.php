@@ -20,6 +20,12 @@ class UserController extends Controller
         return response()->json($users);
     }
 
+    // Get Current User 
+    public function currentUser()
+    {
+        $user = auth()->user();
+        return response()->json($user);
+    }
 
     // POST logout
     public function logout()

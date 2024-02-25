@@ -9,11 +9,16 @@ import successHandler from '../../../../utils/successHandler';
 
 import Swal from 'sweetalert2';
 
+import avatar1 from '../../../assets/utils/images/avatars/1.jpg';
+import avatar2 from '../../../assets/utils/images/avatars/2.jpg';
+import avatar3 from '../../../assets/utils/images/avatars/3.jpg';
+import avatar4 from '../../../assets/utils/images/avatars/4.jpg';
+import placeholder from '../../../assets/utils/images/placeholder.png'
+import axios from 'axios';
+
 export default class TableHover extends React.Component {
   constructor() {
     super();
-
-
 
     this.state = {
       allProducts: [],
@@ -29,6 +34,7 @@ export default class TableHover extends React.Component {
       price_edit: '',
       product_id: '',
       currentIndex: 1,
+      product_image: '',
     };
 
     this.records = [];
@@ -41,10 +47,12 @@ export default class TableHover extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    // this.handleImage = this.handleImage.bind(this);
     this.goToPage = this.goToPage.bind(this);
     this.prevPage = this.prevPage.bind(this);
     this.nextPage = this.nextPage.bind(this);
     this.toggleSomething = this.toggleSomething.bind(this);
+    // this.uploadProductImage = this.uploadProductImage.bind(this);
   }
 
   goToPage(e, indx) {
@@ -101,7 +109,7 @@ export default class TableHover extends React.Component {
     }))
   }
 
-  toggleSomething(e){
+  toggleSomething(e) {
     console.log('hey', e.target)
   }
 
@@ -115,11 +123,11 @@ export default class TableHover extends React.Component {
         this.setState(prevState => ({
           activeButton: !prevState.activeButton,
         }))
-        
+
       }).catch((err) => {
         console.log(err)
       })
-    
+
   }
 
   handleChange(e) {
@@ -151,17 +159,27 @@ export default class TableHover extends React.Component {
         errorHandler(err.response.data.errors.product_name)
         errorHandler(err.response.data.errors.price)
       })
-    
+
   }
 
   handleSubmitEdit(e) {
     e.preventDefault();
 
     const postData = {
-      product_name: this.state.product_name ? this.state.product_name.split(' ').map((el) => el[0].toUpperCase() + el.slice(1)).join(' ') : '',
+      product_name: this.state.product_name_edit ? this.state.product_name_edit.split(' ').map((el) => el[0].toUpperCase() + el.slice(1)).join(' ') : '',
       price: this.state.price_edit,
       stock: this.state.stock_edit
     }
+
+    const formData = new FormData();
+    formData.append('product_image', this.state.product_image)
+    AuthApi.imageUpload(formData, this.state.product_id)
+      .then((res) => {
+        console.log(res)
+        this.products();
+      }).catch((err) => {
+        console.log(err)
+      })
 
     AuthApi.updateProduct(postData, this.state.product_id)
       .then((res) => {
@@ -173,8 +191,31 @@ export default class TableHover extends React.Component {
         errorHandler(err.response.data.errors.stock)
         errorHandler(err.response.data.errors.price)
       })
-    
+
+      
+
   }
+
+  // uploadProductImage(e, prod_id) {
+  //   e.preventDefault();
+  //   const formData = new FormData();
+  //   formData.append('product_image', this.state.product_image)
+  //   AuthApi.imageUpload(formData, prod_id)
+  //     .then((res) => {
+  //       console.log(res)
+  //       this.products();
+  //     }).catch((err) => {
+  //       console.log(err)
+  //     })
+  // }
+
+  // handleImage(e, prod_id) {
+  //   e.preventDefault()
+  //   this.uploadProductImage(e, prod_id)
+  // }
+
+
+
 
   componentDidMount() {
     this.products();
@@ -182,6 +223,7 @@ export default class TableHover extends React.Component {
   }
 
   // componentDidUpdate(pP, pS, sS) {
+  //   console.log(this.state.product_name)
   //   // console.log(this.hello = 2, 'DIDUPDATE')
   //   // console.log(this.state.activeButton)
   //   // if (pS.allProducts.length !== this.state.allProducts.length) {
@@ -211,7 +253,8 @@ export default class TableHover extends React.Component {
             <table className="align-middle mb-0 table table-borderless table-striped table-hover">
               <thead>
                 <tr>
-                  <th className="fw-bolder">Product Name</th>
+                  <th className=" fw-bolder">Product Image</th>
+                  <th className="text-center fw-bolder">Product Name</th>
                   <th className="text-center fw-bolder">Price</th>
                   <th className="text-center fw-bolder">Stock</th>
                   <th className="text-center fw-bolder">Active</th>
@@ -223,18 +266,40 @@ export default class TableHover extends React.Component {
 
                   <tr key={indx}>
                     <td className="">
-                      <div className="p-0">
+
+                      <div className="d-flex flex-column">
+                        <div className="d-inline">
+
+                          <img width={80} height={80} className="rounded" src={prod.product_image ? `http://127.0.0.1:8000/storage/${prod.product_image}` : placeholder} alt="Avatar" />
+
+                        </div>
+                        {/* <div className='d-flex gap-10 flex-row w-75'>
+                          <form className='' onSubmit={(e) => this.handleImage(e, prod.id)} >
+
+
+                            <button type='submit' className='rounded border border-0 buttonHover'>Upload</button>
+                          </form>
+                        </div> */}
+                      </div>
+
+                      {/* <div className="p-0">
                         <div className="widget-content-wrapper">
                           <div className="widget-content-left me-3">
-                            {/* <div className="widget-content-left">
+                            <div className="widget-content-left">
                                 <img width={40} className="rounded-circle" src={avatar3} alt="Avatar" />
-                              </div> */}
+                              </div>
                           </div>
                           <div className="widget-content-left flex2">
                             <div className="widget-heading">{prod.product_name}</div>
-                            {/* <div className="widget-subheading opacity-7">{}</div> */}
+                            <div className="widget-subheading opacity-7">{}</div>
                           </div>
                         </div>
+                      </div> */}
+                    </td>
+                    <td className='text-center'>
+                      <div className="widget-content-left flex2">
+                        <div className="widget-heading">{prod.product_name}</div>
+                        <div className="widget-subheading opacity-7">random data</div>
                       </div>
                     </td>
                     <td className="text-center">{this.PHPESO.format(prod.price)}</td>
@@ -245,7 +310,7 @@ export default class TableHover extends React.Component {
                           type="switch"
                           // defaultChecked={prod.active === 'true' ? true : false}
                           checked={prod.active === 'true' ? true : false}
-                          // onChange={(e) => this.toggleSomething(e)}
+                          onChange={(e) => this.toggleSomething(e)}
                           onClick={(e) => this.toggleActivateButton(prod.id)}
                         />
                       </FormGroup>
@@ -292,7 +357,7 @@ export default class TableHover extends React.Component {
           <div className="d-block text-center card-footer">
             {/* <button className="me-2 btn-icon btn-icon-only btn btn-outline-danger"><i className="pe-7s-trash btn-icon-wrapper"> </i></button>
             <button className="btn-wide btn btn-success">Save</button> */}
-            <TablePagination goToPage={this.goToPage} nextPage={this.nextPage} prevPage={this.prevPage} allProducts={this.state.allProducts} currentIndex={this.state.currentIndex} newRecords={this.records} />
+            {/* <TablePagination goToPage={this.goToPage} nextPage={this.nextPage} prevPage={this.prevPage} allProducts={this.state.allProducts} currentIndex={this.state.currentIndex} newRecords={this.records} /> */}
           </div>
         </Card>
 
@@ -338,16 +403,13 @@ export default class TableHover extends React.Component {
                   name="stock"
                   type="number"
                   onChange={this.handleChange}
-                // value={this.state.product_quantity}
                 />
 
               </FormGroup>
 
+
             </ModalBody>
             <ModalFooter>
-              {/* <div className='mt-3'>
-                <p className='fs-5'>Total Amount: {`0.00`}</p>
-              </div> */}
               <Button color="primary" onClick={this.handleSubmit}>
                 Submit
               </Button>{' '}
@@ -408,6 +470,30 @@ export default class TableHover extends React.Component {
                 />
 
               </FormGroup>
+
+              {/* <input className='w-25 border border-0' type='file' name='product_image' onChange={(e) => {
+                            this.setState({
+                              product_image: e.target.files[0]
+                            })
+                          }} accept=".png, .jpg, .jpeg, .gif" /> */}
+              <FormGroup>
+                <Label for="image">
+                  Product Image
+                </Label>
+                <Input
+                  id="image"
+                  name="product_image"
+                  type="file"
+                  onChange={(e) => {
+                    this.setState({
+                      product_image: e.target.files[0]
+                    })
+                  }}
+                  accept=".png, .jpg, .jpeg, .gif"
+                />
+
+              </FormGroup>
+
             </ModalBody>
             <ModalFooter>
               <Button color="primary" onClick={this.handleSubmitEdit}>
@@ -417,6 +503,7 @@ export default class TableHover extends React.Component {
                 Cancel
               </Button>
             </ModalFooter>
+
           </Form>
         </Modal>
 

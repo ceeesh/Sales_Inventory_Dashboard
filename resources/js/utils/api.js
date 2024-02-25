@@ -15,6 +15,12 @@ class AuthApi {
         // , { headers: token }
     }
 
+     // GET retrieving current user
+     getAllCurrentUser = async (token) => {
+        return await axios.get(`${BASED_URL}current_user`)
+        // , { headers: token }
+    }
+
     // GET retrieving all projects 
     getAllProjects = async (token) => {
         return await axios.get(`${BASED_URL}projects`)
@@ -82,10 +88,16 @@ class AuthApi {
         return await axios.delete(`${BASED_URL}product/${product_id}`)
     }
 
-     // POST new product
+     // PUT new product
      activateButton = async (data, product_id) => {
         return await axios.put(`${BASED_URL}product/activate/${product_id}`, data)
     }
+
+    // PUT new product
+    imageUpload = async (data, product_id) => {
+        return await axios.post(`${BASED_URL}product/image/${product_id}`, data)
+    }
+    // 'product/image/{product_id}'
 }
 
 export default new AuthApi();

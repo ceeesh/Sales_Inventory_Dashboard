@@ -33,8 +33,21 @@ class UserBox extends React.Component {
         super(props);
         this.state = {
             active: false,
+            currentUser: [],
         };
 
+    }
+
+    async getUser() {
+        AuthApi.getAllCurrentUser()
+        .then((res) => {
+            // console.log(res)
+            this.setState({
+                currentUser: res.data
+            })
+        }).catch((err) => {
+            // console.log(err)
+        })
     }
 
     async logOut() {
@@ -44,6 +57,12 @@ class UserBox extends React.Component {
                 window.location.replace('/login')
             })
     }
+
+    componentDidMount() {
+        this.getUser();
+        // console.log(this.state.currentUser.name)
+      }
+    
 
     notify2 = () => this.toastId = toast("You don't have any new items in your calendar for today! Go out and play!", {
         transition: Bounce,
@@ -112,10 +131,10 @@ class UserBox extends React.Component {
                             </div>
                             <div className="widget-content-left  ms-3 header-user-info">
                                 <div className="widget-heading">
-                                    Alina Mclourd
+                                    {this.state.currentUser.name}
                                 </div>
                                 <div className="widget-subheading">
-                                    VP People Manager
+                                {this.state.currentUser.occupation}
                                 </div>
                             </div>
 

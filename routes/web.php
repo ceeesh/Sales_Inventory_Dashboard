@@ -34,6 +34,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/active_users', [UserController::class, 'activeUsers']);
 
+    Route::get('/current_user', [UserController::class, 'currentUser']);
+
     Route::get('/projects', [ProjectController::class, 'index']);
 
     Route::get('/in_progress_projects', [ProjectController::class, 'inProgressProjects']);
@@ -60,6 +62,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('/product/{product_id}', [ProductController::class, 'destroy']);
 
     Route::put('product/activate/{product_id}', [ProductController::class, 'activate']);
+
+    Route::post('product/image/{product_id}', [ProductController::class, 'imageUpload']);
 
     Route::post('/logout', [UserController::class, 'logout']);
 });
