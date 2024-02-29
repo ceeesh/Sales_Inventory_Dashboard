@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASED_URL = 'http://127.0.0.1:8000/'
+const BASED_URL = 'https://54.149.163.134/'
 
 class AuthApi {
 
